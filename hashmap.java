@@ -8,7 +8,7 @@ Subarray sum Divisible by k
 K closest point from origin
 subarray with equal number of 0 and 1
 Substring with equal 0 1 and 2
-14-Jun-20
+
 Minimum number of refueling spots
 Check AP sequence
 Line reflection
@@ -18,7 +18,6 @@ Isomorphic string
 X of akind in a deck
 Brick wall
 Longest consecutive sequence
-15-Jun
 Grid illumination
 rearrange character string such that no two are same
 Island perimeter
@@ -26,14 +25,12 @@ max frequency stack
 length of largest subarray with continuous element
 length of largest subarray with cont element 2
 Sliding window maximum
-17-Jun
 Trapping Rain Water II
 Kth smallest element in sorted 2d matrix
 Kth smallest prime fraction
 Count Pair whose sum is divisible by k
 bulb switcher
 Employee Free time
-19-Jun
 Pairs of coinciding points
 same frequency after one removal
 smallest number whose digit mult to given no.
@@ -44,7 +41,6 @@ Anagram mapping
 Group anagram
 Find smallest size of string containing all char of other
 smallest subarray with all the occurence of MFE
-20-Jun
 K anagram
 longest substring with unique character
 Insert Delete GetRandom O(1)
@@ -492,10 +488,136 @@ fq  1   1  1 1  2 1  2 1 2 1  2 3
 
 
 //8  ====================================================================================================================
+// https://leetcode.com/problems/minimum-window-substring/
+//Smallest Substring Of A String Containing All Characters Of Another String
+
+// given string s1 :   d b a e c b b a b d c a a f b d d c a b g b a
+//s2 : abbcdc
+
+// find the smallest substring of s1 that contains all the characters of s2.
 
 
+//freq map for s2 which show number of character count in s2
 
-    public static void main(String[] args) {
+abbcdc
+a-1
+b-2
+c-2
+d-1
+==a1b2c2d1
+
+j=-1 0 1 2 3 4 5 6 7 8 9 10 11   
+     d b a e c b b a b d c a a f b d d c a b g b a
+  
+  j  d1b1a2e1c1b2b3a2b4d2c1
+
+  acquire
+    ------------------------  At this point first iteration completes as all the chahacter arr found of s2
+
+  
+process
+    Now will make this string little shot if possible by increaing jana
+
+ 
+j=-1 0 1 2 3 4 5 6 7 8 9 10 11   
+     d b a e c b b a b d c a a f b d d c a b g b a
+   | | 
+   j j j j
+
+  -1 0 1 2 3 4 5 6 7 8 8 10 till character c tak
+
+    d1b1a2e1c1b2b3a2b4d2c1  yaha d=4 hai c=1 hai a=2 hai b=4 hai
+  
+    ab j wale chahcter ko remove karne se kya all the character of s1 mil raha hai to string ko chhota kareneg a1b2c2d1
+
+        d1b1a2e1c1b2b3a2b4d2c2
+          b1a2e1c1b2b3a2b4d1c2
+            a2e1c1b1b2a2b3d1c2
+              e1c1b1b2a1b3d1c2  //e1 hata sakte hai kynki s2 meni ni chahiye
+                c1b1b2a1b3d1c2 // yaha 1 c haiand required bhi s1 min 1 hi c hai so yaha hai tak ka answer hai
+
+               substring( j+1 , i+1);// i+1 mein i tak substring count hota hai
+  
+    is stage pe c1 sa aage badhna hai j abhi c1 pe hoga and i++ hoga
+  
+  
+  public static String solution(String s1, String s2){
+
+        //frequency map for s2 the original string
+		 HashMap<Character, Integer> map2 = new HashMap<>();
+         String ans = "";
+          for(char c: s2.toCharArray()){
+              map2.put(c,map2.getOrDefault(c,0)+1);
+          }
+        
+
+
+        int minium_chaacter_in_s2 = s2.length();
+        int minimum_character_in_s1 = 0;
+        int len = s1.length();
+        HashMap<Character, Integer> map1 = new HashMap<>();
+        int j=-1;
+        int i=-1;
+        
+        while(true) {
+          boolean loopOne = false;
+          boolean looptwo = false;
+            
+          // a1b2c2d1 = 6 = minium_chaacter_in_s2
+          //minimum_character_in_s1 ye value tav badhega b <=2 milega usko s1 mein b case mein, d<=1 milega s1 mien
+          while (i < len-1 && minimum_character_in_s1 < minium_chaacter_in_s2) { // i< s1.lenght()-1 kynki charAt(s1.lenght()) exception
+            i++;
+            char ch = s1.charAt(i);
+            map1.put(ch, map1.getOrDefault(ch, 0) + 1);
+    
+            if (map1.getOrDefault(ch, 0) <= map2.getOrDefault(ch, 0)) {
+              minimum_character_in_s1++;
+            }
+    
+            loopOne = true;
+          }
+    
+           // is jagah pe humkko  minimum_character_in_s1 mein saare 6 chaacter minium_chaacter_in_s2 k mil gaye honge
+          while (j < i && minimum_character_in_s1 == minium_chaacter_in_s2) {
+            String present_answer = s1.substring(j + 1, i + 1);
+    
+            if (ans.length() == 0 || present_answer.length() < ans.length()) {
+              ans = present_answer;
+            }
+            j++;
+    
+            char ch = s1.charAt(j);
+            //har chacater ko aage se trim karna hai
+            if (map1.get(ch) == 1) {
+              map1.remove(ch);
+            } else {
+              map1.put(ch, map1.get(ch) - 1);
+            }
+            //minimum_character_in_s1 iska value 6 character se kam hua to minimum_character_in_s1 ye kam hoga ab i aage badhega acquire phase mien
+            if (map1.getOrDefault(ch, 0) < map2.getOrDefault(ch, 0)) {
+              minimum_character_in_s1--;
+             
+                
+            }
+            looptwo = true;
+          }
+    
+            if(loopOne==false && looptwo==false){
+              break;
+            }
+        }
+        return ans;
+	}
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  public static void main(String[] args) {
         
     }
 }
