@@ -612,9 +612,71 @@ j=-1 0 1 2 3 4 5 6 7 8 9 10 11
   
   
   
-  
-  
-  
+//9  ====================================================================================================================
+//Smallest Substring Of A String Containing All Unique Characters Of Itself
+
+//isme output only length deni hai jisme saare uniq chacter honge
+//input 1 hi string hog, uska minimu substring nikalenege jisme saare unique chacter hoga
+
+public static int solution(String str){
+		HashSet<Character> uniqueSet = new HashSet<>();
+		int len = str.length();
+		for(char ch: str.toCharArray()){
+		    uniqueSet.add(ch);
+		}
+		//System.out.println(uniqueSet);
+		
+		int ans = Integer.MAX_VALUE;
+		
+		HashMap<Character, Integer> map = new HashMap<>();
+		int i=-1;
+		int j=-1;
+		
+		while(true){
+		    //acquire
+		    boolean firstLoop = false;
+            boolean secondLoop = false;
+            
+            // map.size() < uniqueSet.size() ye is liye kynki set mein saare unique chater hai aur map ka key set ke saare ley hi honge
+		    while(i< len-1 && map.size() < uniqueSet.size()){
+		        i++;
+		        char c = str.charAt(i);
+		        map.put(c, map.getOrDefault(c,0)+1); 
+		        firstLoop = true;
+		    }
+		    
+		    while(j<i && map.size() == uniqueSet.size()){
+		        int pans = i-j;
+		        
+		        if(pans< ans){
+		            ans = pans;
+		        }
+		        j++;
+		        
+		        char c = str.charAt(j);
+		        
+		        if(map.get(c)==1){
+		            map.remove(c);
+		        }else{
+		            map.put(c, map.get(c)-1);
+		        }
+		        
+		        secondLoop=true;
+		        
+		    }
+		    
+		    if(firstLoop==false && secondLoop==false){
+		        break;
+		    }
+		    
+		}
+		return ans;
+    }
+    
+
+
+
+
   
   
   public static void main(String[] args) {
