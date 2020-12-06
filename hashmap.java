@@ -1269,6 +1269,91 @@ public static int solution(String str, int k) {
 	}
 
 
+//18  ====================================================================================================================
+// Count of Substrings with at-most K Distinct Characters
+/*
+ j   a  a  b  c  b  c  d  b  d  b  c  a k:2
+     |     |
+     aab
+     ab
+     b
+     j=0 i=3    (i =3 pe k=3 hua tha i=2 pe sab sahi tha)
+     i-j = 3 - 0 = 3    
+
+
+
+
+		    if(i==str.length()-1 && map.size()==k){
+		        break;
+            }
+            
+            Siginificance of this line  jab i last tak pahuch gaya hoga and and map mein size bhi k so aage ni chalna hai
+
+*/
+
+public static int solution(String str, int k) {
+		// write your code here
+		
+		int ans = 0;
+		int i=-1;
+		int j=-1;
+		
+		HashMap<Character, Integer> map = new HashMap<>();
+		while(true){
+		    boolean first = false;
+		    boolean second = false;
+		    
+		    while(i<str.length()-1){
+		        first = true;
+		        i++;
+		        char ch = str.charAt(i);
+		        map.put(ch, map.getOrDefault(ch,0)+1);
+		        if(map.size()<=k){
+		            int len = i-j;
+		            ans += len;
+		            
+		        }else{
+		            break;
+		        }
+		    }
+            
+            
+		    if(i==str.length()-1 && map.size()==k){
+		        break;
+		    }
+		    while(j<i){
+		        second=true;
+		        j++;
+		        char ch = str.charAt(j);
+		        if(map.get(ch)==1){
+		            map.remove(ch);
+		        }else{
+		            map.put(ch, map.getOrDefault(ch,0)-1);
+		        }
+		        
+		        if(map.size()==k){
+		            int len = i-j;
+		            ans += len;
+		            break;
+		        }
+		  }
+		  
+		  if(first==false && second==false){
+		      break;
+		  }
+		  
+		  
+		}
+		
+		return ans;
+	}
+	
+	public static void main(String[] args) {
+		Scanner scn = new Scanner(System.in);
+        String str = scn.next();
+        int k = scn.nextInt();
+		System.out.println(solution(str,k));
+	}
 
   public static void main(String[] args) {
         
