@@ -1070,16 +1070,73 @@ public static void main(String[] args) {
 
 
 
+//15  ====================================================================================================================
 
+//Maximum Consecutive Ones - 2
+//given an array(arr) which contains only 0's and 1's and a number K.
+// find the maximum number of consecutive 1's in the given array if you can flip at most K zeroes.
 
+/*
+j=-1, k=2
+acquire 
+// 1 1 0 1 0 0 1 1 0 1 0 1 1 
+   i  ans=1
+     i  ans=2
+      i  ans=3 Only 1 O we need 2 zero
+         i  ans=4
+           i  ans=5 // 2 0]s are used a
+              yaha count ki value 3 hogai hai count > k
 
-
-
-
-
-
-
+release j++
+  jab tak count ki value 2 ya use kam ni hota hai
+  j aage badhta rahaega
+  arr[j] == 0 hoga, tab count-- yani count =2 ho jayega 3 se
+  // 1 1 0 1 0 0 1 1 0 1 0 1 1 
+                     i<- third zero tak paphuch gaya hai
+         | <- ye zero delete ho jayega
+       
+         i  ans=4
+           i  ans=5 // 2 0]s are used a
   
+  */
+
+public static int solution(int[] arr, int k){
+        // write your code here
+        int j=-1;
+        int count = 0;
+        int ans = 0;
+        for(int i=0;i<arr.length;i++){
+            if(arr[i]==0){
+                count++;
+            }
+            
+            while(count > k){
+                j++;
+                if(arr[j] == 0){
+                    count--;
+                }
+            }
+            int len = i-j;
+            ans = Math.max(ans, len);
+            
+        }
+        return ans;
+    }
+    
+	public static void main(String[] args) {
+		Scanner scn = new Scanner(System.in);
+        int n = scn.nextInt();
+        int[] arr = new int[n];
+        for(int i = 0 ; i  < n; i++){
+            arr[i] = scn.nextInt();
+        }
+        int k = scn.nextInt();
+        System.out.println(solution(arr,k));
+	}
+
+
+
+
   public static void main(String[] args) {
         
     }
