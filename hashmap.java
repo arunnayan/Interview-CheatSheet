@@ -1135,6 +1135,52 @@ public static int solution(int[] arr, int k){
 	}
 
 
+//16  ====================================================================================================================
+//https://leetcode.com/problems/max-consecutive-ones-iii/
+
+Maximum Consecutive Ones - 1
+Given an array(arr) which contains only 0's and 1's.
+find the maximum number of consecutive 1's in the given array if you can flip at most one zero.
+
+//Same to previous one
+
+
+public static int solution(int[] arr){
+        int ans = 0;
+        int count = 0;
+        int j=-1;
+        
+        for(int i=0;i<arr.length;i++){
+            if(arr[i]==0){ /////////////////first change
+                count++;
+            }
+            
+            if(count>1){ ////////////////////second change
+                j++;
+                if(arr[j]==0){
+                    count--;
+                }
+            }
+            
+            int l = i-j;
+            
+            ans = Math.max(l, ans);
+        }
+
+        return ans;
+    }
+    
+	public static void main(String[] args) {
+		Scanner scn = new Scanner(System.in);
+        int n = scn.nextInt();
+        int[] arr = new int[n];
+        for(int i = 0 ; i  < n; i++){
+            arr[i] = scn.nextInt();
+        }
+        System.out.println(solution(arr));
+    }
+    
+
 
 
   public static void main(String[] args) {
