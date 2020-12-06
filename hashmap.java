@@ -983,6 +983,96 @@ public static int solution(String str, int k){
 
 
 //14  ====================================================================================================================
+// Count of Equivalent Subarrays
+// count of unique integers in the subarray = count of unique integers in the given array.
+
+// 2 5 3 5 2 4 1 3 1 4
+
+//1 hashset mein hum ssare unque element daalsne
+
+//2 HashMap<Number anf frequcnr>
+// jause map ka size HashSet k size barabar ho jata hai 1 subarray mill gaya
+/*
+{2 5 3 5 2 4 1} 3 1 4
+ yaha taka subaarray mein saare unique elemen milenege
+{2 5 3 5 2 4 1 3} 1 4
+{2 5 3 5 2 4 1 3 1} 4 
+{2 5 3 5 2 4 1 3 1 4 }
+
+Aur fir usk baad ssare hi valid hone  so total = 4 
+
+Now release phase
+2  { 5 3 5 2 4 1} 3 1 4  // 2 release hua abhi saare element hash map k part hai fir 4
+2  { 5 3 5 2 4 1 3} 1 4
+2 { 5 3 5 2 4 1 3 1} 4 
+2 { 5 3 5 2 4 1 3 1 4 }
+
+Tab tak release karnent zjap tak map.size < set.size()
+
+*/
+
+public static void main(String[] args) {
+		Scanner scn = new Scanner(System.in);
+        int n = scn.nextInt();
+        int[] arr = new int[n];
+        HashSet<Integer>  uniqe_number = new HashSet<>();
+        for(int i = 0 ; i  < n; i++){
+            arr[i] = scn.nextInt();
+            uniqe_number.add(arr[i]);
+        }
+        
+        int k = uniqe_number.size();
+        int i =-1;
+        int j =-1;
+        int count = 0;
+        HashMap<Integer, Integer> map = new HashMap();
+        while(true){
+            boolean first = false;
+            boolean second = false;
+            while( i< arr.length-1){
+                first = true;
+                i++;
+                int x = arr[i];
+                map.put(x, map.getOrDefault(x,0)+1);
+                
+                if(map.size()== k){
+                    count +=arr.length-i;
+                    break;
+                }
+                
+            }
+            
+            while(j<i){
+                second = true;
+                j++;
+                if(map.get(arr[j]) == 1){
+                    map.remove(arr[j]);
+                }else{
+                    map.put(arr[j], map.get(arr[j])-1);
+                }
+                
+                if(map.size()==k){
+                    count +=arr.length-i;
+                   
+                }else{
+                    break;
+                }
+            }
+       
+        
+            if(first==false && second == false){
+                break;
+            }
+        }
+		System.out.println(count);
+		
+	}
+
+
+
+
+
+
 
 
 
