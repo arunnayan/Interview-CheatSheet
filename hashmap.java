@@ -675,9 +675,320 @@ public static int solution(String str){
     
 
 
+//10  ====================================================================================================================
+//https://leetcode.com/problems/longest-substring-without-repeating-characters/
+//Longest Substring With Non Repeating Characters
+
+//You are given a string.
+//You have to find the length of the longest substring of the given string that contains all non-repeating characters.
+
+//ip : aabcbcdbca
+//op: 4
+/*
+a
+aa X  len=1   //delete first a [a,2]--> [a,1]  decrese its value to 1  mak sure it value shou be 1 ini relase phase
+_ab   len=2
+_abc  len=3 
+_abcb X lwn =3 //delete first a [a:1,b:1,c:1:b:2]--> [b:1,c:1:b:2]--> [b:1,c:1:b:2]  decrese its value to 1  mak sure it value shou be 1 ini relase phase
+                                              
+a:0
+b:2-1 === b:1 yaha value 1 mila to brak kar jayega
+___cbc yaha se acquire start hoga
+jaise hi b=1 milega 
 
 
+*/
+
+public static int solution(String str) {
+		// write your code here
+		int ans = 0;
+		HashMap<Character, Integer> map = new HashMap<>();
+		int i=-1;
+		int j=-1;
+		
+		while(true){
+		    boolean first = false;
+		    boolean second = false;
+		    while( i < str.length()-1){
+                first = true;
+		        i++;
+		        char ch = str.charAt(i);
+		        map.put(ch, map.getOrDefault(ch,0)+1);
+		        
+		        if(map.get(ch)==2){
+		            break;
+		        }else{
+		            int len = i-j;
+                    if(len > ans){
+                        ans= len;
+                    }
+		        }
+		    }
+            
+            while(j<i){
+                
+                
+                j++;
+                
+                char ch = str.charAt(j);
+                map.put(ch, map.get(ch)-1);
+                if(map.get(ch)==1){
+                    break;
+                }
+                
+               second = false;
+                
+            }		    
+		    
+		    if(first ==  false && second == false){
+		        break;
+		    }
+		}
+		return ans;
+		
+	}
+	
+	public static void main(String[] args) {
+		Scanner scn = new Scanner(System.in);
+		String str = scn.next();
+		System.out.println(solution(str));
+	}
+
+//11  ====================================================================================================================
+
+//Count Of Substrings Having All Unique Characters
+/*
+abbc
+a
+ab
+abb X
+abbd X
+
+b
+bb  X
+bbd  X
+
+    i
+    a      b       c
+   _a
+j
+
+
+           i
+    a      b       c
+   _______ab
+          _b
+   j
+
+
+
+
+                   i
+    a      b       c
+            _______bc
+   _______________abc
+                 _c
+           j
   
+
+Magic of i-j
+i-j
+
+j=-1
+
+abc
+i=0 {a}
+
+i-j = 0- -1 = 1 {a}
+
+j=-1 
+ a                b                 c                                   c
+ a               {ab,b}             {abc,bc,c}
+i
+
+i=0              i=1               i=2                                  i=3
+j=-1             j=-1              j=-1                                 j=0 remove charAt(j) = 0 that is a delted {b c c}, then {c,c} herx map(c=2) which will                                                                              become 1 after map.put(c,map.get(c)-1); 
+
+i-j+=1            i-j=1- -1=2      i-j=2- -1=3                         i-j = 1 as j++ is inceaseing
+*/                                                        
+
+
+
+public static int solution(String str) {
+	int count =0;
+	HashMap<Character,Integer > map = new HashMap<>();
+	int i=-1,j=-1;
+	
+	while(true){
+	    boolean first = false;
+	    boolean second = false;
+	    //acquire
+	    
+	    while(i<str.length()-1){
+	        first = true;
+	        i++;
+	        char c  = str.charAt(i);
+	        map.put(c,map.getOrDefault(c,0)+1);
+	        if(map.get(c)==2){
+	            break;
+	        }else{
+	            count += (i-j);
+	        }
+	   }
+	   
+	   
+	   //release
+	   while(j<i){
+	       second = false;
+	       j++;
+	       char c  = str.charAt(j);
+	       
+	       map.put(c,map.get(c)-1);
+	       
+	       if(map.get(c)==1){
+	           count += (i-j);
+	           break;
+	       }
+	   }
+	    
+	    if(first==false && second==false){
+	        break;
+	    }
+	    
+	    
+	}
+	
+	
+	return count;
+	}
+	
+	public static void main(String[] args) {
+		Scanner scn = new Scanner(System.in);
+		String str = scn.next();
+		System.out.println(solution(str));
+	}
+
+
+
+
+
+//12  ====================================================================================================================
+// Longest Substring With Exactly K Unique Characters
+
+/*
+//You are given a string(str) and a number K.
+//You have to find length of the longest substring that has exactly k unique characters.
+//If no such substring exists, print "-1".
+
+
+//aabcbcdbca k=2 uniq character
+
+// [a:2,b:1]  size==3
+// aab           Here map size is two with 2 unique chaacter ab
+
+//j=-1 i =2 : 2- -1 = 3
+
+//i++  aabc [a:2,b:1,c:1]  size()=3 break 
+realaese phase
+//j++ == -j ++ = j=0
+aabc
+j  i   charAt(j) = a map.put(a:2-1) : [a:1,b:1,c:1] size()-3 still 
+
+J++
+_abc   map.remove(a) [b:1,c:1] size ==2  (size = 2) so old size was 3
+ j=1
+
+ */ 
+
+public static int solution(String str, int k){
+		
+		HashMap<Character, Integer> map =new HashMap<>();
+		int ans = 0;
+		int i=-1;
+		int j=-1;
+		
+		while(true){
+		    boolean first = false;
+		    boolean second = false;
+		    while(i < str.length()-1){
+		        first = true;
+		        i++;
+		        char ch = str.charAt(i);
+		        map.put(ch, map.getOrDefault(ch,0) +1);
+		        if(map.size() < k){
+		            continue;
+		        }else if (map.size()==k){
+		            int len = i-j;
+		            ans=Math.max(len, ans);
+		        }else{
+		            break; 
+		        }
+		    }
+		    
+		     while(j < i){
+		         second = true;
+		        j++;
+		        char ch = str.charAt(j);
+		        if(map.get(ch)==1){
+		            map.remove(ch);
+		        }else{
+		            map.put(ch, map.get(ch)-1);    
+		        }
+		        
+		        
+		        if(map.size() > k){
+		            continue;
+		        }else if(map.size()==k){
+		            int len = i-j;
+		            ans=Math.max(len, ans);
+		            break;
+		        } 
+		    }
+		    
+		    
+		    if( first == false &&  second == false){
+		        break;
+		    }
+		}
+		
+
+		return ans;
+	}
+	
+	public static void main(String[] args) {
+		Scanner scn = new Scanner(System.in);
+        String str = scn.next();
+        int k = scn.nextInt();
+		System.out.println(solution(str,k));
+	}
+
+
+
+//13  ==============================================TOUGH======================================================================
+//Count Of Substrings With Exactly K Unique Characters
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//14  ====================================================================================================================
+
+
+
+
+
+
   
   public static void main(String[] args) {
         
