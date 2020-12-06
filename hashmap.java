@@ -1419,9 +1419,124 @@ count 1     1  1  1 1    1  1   2
         System.out.println(solution(arr,target));
     }
     
+//20  ====================================================================================================================
+//Find All Anagrams In A String
 
+//anagarm, aaise words jinkin frequncy 1same ho
 
+//cbaebabacd
+   
+//abc
+
+//chota wala string pattern_map=abc isme jitne string hai utna mandtory hai
+
+pattern_map{
+    a:1
+    b:1
+    c:1
+}
+
+ab 3 character hum string_map map me {cba}ebabacd is se daal lenge
+
+string_map{
+    c:1
+    b:1
+    a:1
+}
+
+cbaebabacd
+j  i
+ab 1 comapre function banayaa agaya jo dono hashmap ko comapre karege freq k basis pe 
+
+//BHI FALSE RETUR KARGE i++ {cbae}babacd
+cbaebabacd
+j   i
+string_map{
+    c:1
+    b:1
+    a:1
+    e:1
+}
+leneht mismatch j=0 remove hoga map se and j++
+cbaebabacd
+ j  i
+string_map{
     
+    b:2
+    a:1
+    e:1
+}
+string_map{
+    
+    b:1
+    a:1
+    e:1
+}
+cbaebabacd
+ j    i
+//compare not equal aquire
+
+public static void findAnagrams(String s, String p) {
+        HashMap<Character, Integer> pattern_map = new HashMap<>();
+        HashMap<Character, Integer> string_map = new HashMap<>();
+        
+        for(int i=0; i<p.length();i++){
+            char c = p.charAt(i);
+            pattern_map.put(c, pattern_map.getOrDefault(c,0)+1);
+        }
+        
+        for(int i=0;i<p.length();i++){
+            char c = s.charAt(i);
+            string_map.put(c, string_map.getOrDefault(c,0)+1);
+        }
+        
+        
+        int j=0;
+        int i = p.length();
+        int count = 0;
+        String ans = "";
+        while(i < s.length()){
+            
+            if(compare(pattern_map, string_map)==true){
+                count++;
+                ans+=j +" ";
+            }
+            
+            char c = s.charAt(i);
+            string_map.put(c, string_map.getOrDefault(c,0)+1);
+            
+            char ch = s.charAt(i-p.length());
+            
+            if(string_map.get(ch)==1){
+                string_map.remove(ch);
+            }else{
+                string_map.put(ch, string_map.get(ch)-1);
+            }
+            i++;
+            j++;
+        }
+        
+        
+        if(compare(pattern_map,string_map)==true){
+                count++;
+                ans+=j +" ";
+        }
+         
+        System.out.println(count);
+        System.out.println(ans);
+        
+    }
+    
+    public static boolean compare(HashMap<Character, Integer> pattern_map, HashMap<Character, Integer> string_map){
+            for(char c: pattern_map.keySet()){
+                if(pattern_map.getOrDefault(c,0)!= string_map.getOrDefault(c,0)){
+                    return false;
+                }
+            }
+            return true; 
+        }
+
+
 
   public static void main(String[] args) {
         
