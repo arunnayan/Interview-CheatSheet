@@ -1355,6 +1355,74 @@ public static int solution(String str, int k) {
 		System.out.println(solution(str,k));
 	}
 
+
+//**  ====================================================================================================================
+// Binary String With Substrings Representing Numbers From 1 To N
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//19  ====================================================================================================================
+//Count Of Subarrays Having Sum Equals To K
+   
+ /*       
+            3 9 -2  4   1   -7  2   6 -5 8 -3 -7 6 2 1
+
+ sum  0     3 12 10 14  15  8  10
+count 1     1  1  1 1    1  1   2
+
+                   -------------
+                   4   1   -7  2 SUM =0 1 zero mil gaya map mei check akrenge ki 10 pahle se hai agar hai to ans++
+                   map(10 , amp.get(10)++) 
+*/
+
+
+	public static int solution(int[] arr, int target){
+		int count = 0;
+		
+		HashMap<Integer, Integer> map = new HashMap<>();
+		map.put(0,1);
+		int sum = 0;
+		
+		for(int i=0;i<arr.length;i++){
+		    sum+=arr[i];
+		    if(map.containsKey(sum-target)){
+		        count+=map.get(sum-target);
+		    }
+		    map.put(sum, map.getOrDefault(sum,0)+1);
+		}
+		
+		return count;
+	}
+	
+	public static void main(String[] args) {
+		Scanner scn = new Scanner(System.in);
+        int n = scn.nextInt();
+        int[] arr = new int[n];
+        for(int i = 0 ; i < n; i++){
+            arr[i] = scn.nextInt();
+        }
+        int target = scn.nextInt();
+        System.out.println(solution(arr,target));
+    }
+    
+
+
+    
+
   public static void main(String[] args) {
         
     }
