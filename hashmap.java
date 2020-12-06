@@ -1183,6 +1183,93 @@ public static int solution(int[] arr){
 
 
 
+
+
+
+//17  ====================================================================================================================
+//Longest Substring With At Most K Unique Characters
+
+//given a string(str) and a number K.
+//find the length of longest substring of the given string that contains at most K unique characters.
+//Count nikalna hai k se chhote walo ka length niklana hai and then bade hua to release karna hai
+
+//aabcbcdbca  2
+/*
+a k=1 acquire
+a k=1 acquire
+b k=2 acquire
+c k>2 release
+remove a, remove a 
+b k=1 acquire
+c k=2 acquire
+b k=2 acquire
+c k=2 acquire
+d k=3 >2 release
+
+relase b relase c relase b k
+c k=1 acquire
+d k=2 acquire
+*/
+
+public static int solution(String str, int k) {
+		int ans = 0;
+		HashMap<Character, Integer> map = new HashMap<>();
+		int i=-1;
+		int j=-1;
+		
+		while(true){
+		    boolean first = false;
+		    boolean second = false;
+		    
+		    while(i<str.length()-1){
+		        first = true;
+		        i++;
+		        char ch = str.charAt(i);
+		        
+		        map.put(ch, map.getOrDefault(ch,0)+1);
+		        
+		        if(map.size()>k){
+		            break;
+		        }else{
+		            int len = i-j;
+		            ans = Math.max(len,ans);
+		        }
+		        
+		    }
+		    
+		    
+		    while(j<i){
+		        second = true;
+		        j++;
+		        
+		        char ch = str.charAt(j);
+		        if(map.get(ch)==1){
+		            map.remove(ch);
+		        }else{
+		            map.put(ch, map.get(ch)-1);
+		        }
+		        if(map.size()==k){
+		            
+		            int len = i-j;
+		            ans = Math.max(len,ans);
+		            break;
+		         
+		        }
+		        
+		    }
+		    
+		    if(first==false && second==false) {
+		        break;
+		    }
+		}
+		
+		return ans;
+		
+		
+	}
+
+
+
   public static void main(String[] args) {
         
     }
