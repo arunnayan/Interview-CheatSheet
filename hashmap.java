@@ -1538,6 +1538,193 @@ public static void findAnagrams(String s, String p) {
 
 
 
+
+//21  ====================================================================================================================
+
+//two strings s1, s2, and a number K.
+//if two strings are K-anagrams of each other or not.
+/*
+abbcml  {a:1,b:2,c:1,m:1,l:1}
+acjbkb  {a:1,b:2,c:1,k:1,j:1}
+
+//clearly if we change ml from first with kj in second we can get 2 amargam
+
+
+map : {a:1,b:2,c:1,m:1,l:1}  store
+now we will semove second string {a:1,b:2,c:1,k:1,j:1} from first which match
+{a:1,b:2,c:1,m:1,l:1}
+{a:1,b:2,c:1,k:1,j:1}
+
+            {m:1,l:1}
+            {k:1,j:1}
+
+            Now there is only two lwft in map and hence it is valid
+*/
+
+
+
+
+ public static boolean areKAnagrams(String str1, String str2, int k) {
+	    if(str1.length()!=str2.length()) return false;
+		HashMap<Character, Integer> map = new HashMap<>();
+		
+		for(int i=0;i<str1.length();i++){
+		    char ch = str1.charAt(i);
+		    map.put(ch, map.getOrDefault(ch,0)+1);
+		}
+		
+		for(int i=0;i<str2.length();i++){
+		    char ch = str2.charAt(i);
+		    if(map.getOrDefault(ch,0) > 0){
+		         map.put(ch, map.getOrDefault(ch,0)-1);
+		    }
+		   
+		}
+		
+		
+		int count =0;
+		
+		for(char c: map.keySet()){
+		    count+=map.get(c);
+		}
+		
+		if(count >k){
+		    return false;
+		}else{
+		    return true;
+		}
+
+		
+    }
+  
+    
+
+
+
+
+
+
+//22  ====================================================================================================================
+// Find Anagram Mappings
+/*
+1 2 3 4 5 2
+4 3 2 1 5 2
+
+idx  0 1 2 3 4 5
+     1 2 3 4 5 2 str1
+
+
+       4 3 2 1 5 2
+idx    0 1 2 3 4 5 str2
+
+
+
+Answer for str 1 is 3 2 1 0 4 5 
+
+
+So basicaaly str1 ka index denha hai
+
+Map for str2
+
+and har character k liye uska arraylist hoga jo ye batayega kaun sa index kab kab aaya hai 
+
+1 2  3 4 5 2 jaiause [2 :{1,5}] 2 1 and 5 pe 2 baar aaaya hai
+
+we will make a pair 
+
+    class public static class Pair{
+        int idx = 0;
+        ArrayList<Integer> list = new ArrayList<>();
+        }
+//idx basicaaly track karega kaun sa 2 kab use hua hai
+
+str2 ko map mein daalenege
+
+	HashMap<Integer, Pair> map = new HashMap<>();
+		for(int i=0;i<arr2.length;i++){
+		    if(map.containsKey(arr2[i])){ //agae wo pahle se hai to us character k pair class k array list mein add kar denge
+		        Pair p = map.get(arr2[i]);
+		        p.list.add(i);
+		    }else{
+		        Pair newPair = new Pair(); // wo ni hai to pair class ko ucreate karne
+		        newPair.list.add(i);
+		        map.put(arr2[i], newPair);
+		  }
+        }
+
+        ..ab arr1 se start karnene pair nikalenge [2 :{1,5}] , jaise 2 ko dhunda {1,5 pe 2 mila} first time idx ==0 hai to 1 milega aur idx++ kar denge to next time
+        // jab hum 2 ko dhundege to 5 milega
+        
+        for(int i=0;i<arr1.length;i++){
+                Pair p = map.get(arr1[i]);
+                ans[i] = p.list.get(p.idx);
+                p.idx++;
+            }
+
+
+*/
+
+ public static class Pair{
+        int idx = 0;
+        ArrayList<Integer> list = new ArrayList<>();
+    }
+	public static int[] anagramMappings(int[] arr1, int[] arr2) {
+		HashMap<Integer, Pair> map = new HashMap<>();
+		for(int i=0;i<arr2.length;i++){
+		    if(map.containsKey(arr2[i])){
+		        Pair p = map.get(arr2[i]);
+		        p.list.add(i);
+		    }else{
+		        Pair newPair = new Pair();
+		        newPair.list.add(i);
+		        map.put(arr2[i], newPair);
+		  }
+		}
+		
+		int ans[] = new int[arr1.length];
+		for(int i=0;i<arr1.length;i++){
+		    Pair p = map.get(arr1[i]);
+		    ans[i] = p.list.get(p.idx);
+		    p.idx++;
+		}
+
+		return ans;
+	}
+
+
+//23  ====================================================================================================================
+
+//Valid Anagram
+
+//easy s1 ko freq mao mein daalo and s2 ko freq mein se nikala last mein size ==0 hona chahiiey 
+public static boolean solution(String s1, String s2){
+		if(s1.length()!=s2.length()) return false;
+		
+		HashMap<Character, Integer> map = new HashMap<>();
+		for(int i=0;i< s1.length();i++){
+		    char ch = s1.charAt(i);
+		    map.put(ch, map.getOrDefault(ch,0)+1);
+		 }
+		 
+		 for(int i=0;i< s2.length();i++){
+		    char ch = s2.charAt(i);
+		    if(map.getOrDefault(ch,0)==1){
+		        map.remove(ch);
+		    }else{
+		        map.put(ch, map.getOrDefault(ch,0)-1);
+		    }
+		    
+		 }
+		 
+		 return map.size()==0?true:false;
+
+	 
+	}
+
+
+
+
+
   public static void main(String[] args) {
         
     }
