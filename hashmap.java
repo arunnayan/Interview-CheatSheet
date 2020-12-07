@@ -1722,6 +1722,60 @@ public static boolean solution(String s1, String s2){
 	}
 
 
+//24  ====================================================================================================================
+//Group Anagrams
+//pepcoding codingpep pepper rapper repepp
+//codingpep pepcoding 
+//pepper repepp 
+//rapper 
+
+//HashMap<HashMap<Character, Integer>, ArrayList<String>> big_map = new HashMap<>();
+//HashMap<FRQUNCYMAP, ARRAYLIST_OF_ANARGAMA>
+
+
+	public static ArrayList<ArrayList<String>> groupAnagrams(String[] strs) {
+		HashMap<HashMap<Character, Integer>, ArrayList<String>> big_map = new HashMap<>();
+		
+		for(String str: strs){
+		    HashMap<Character, Integer> map = new HashMap<>();
+		    for(int i=0;i<str.length();i++){
+		        char ch = str.charAt(i);
+		        map.put(ch, map.getOrDefault(ch,0)+1);
+		    }
+		    
+		    if(big_map.containsKey(map)){
+		        ArrayList<String> ol = big_map.get(map);
+		        ol.add(str);
+		    }else{
+		        ArrayList<String> al = new ArrayList<>();
+		        al.add(str);
+		        big_map.put(map,al);
+		        
+		    }
+		    
+		}
+		ArrayList<ArrayList<String>> ans = new ArrayList<ArrayList<String>>();
+		for(ArrayList<String> a : big_map.values()){
+		    ans.add(a);
+		}
+		
+		
+		return ans;
+
+		 
+	}
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
