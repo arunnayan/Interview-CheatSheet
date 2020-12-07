@@ -1723,6 +1723,7 @@ public static boolean solution(String s1, String s2){
 
 
 //24  ====================================================================================================================
+
 //Group Anagrams
 //pepcoding codingpep pepper rapper repepp
 //codingpep pepcoding 
@@ -1767,14 +1768,115 @@ public static boolean solution(String s1, String s2){
 
 
 
+//25  ====================================================================================================================
+
+//Group Shifted String
+
+/*
+group the given strings in such a way that all strings in a group are shifted versions of each other
+Two strings s1 and s2 are shifted if -
+   -> Length of both the strings is the same.
+   -> The difference between ASCII values of every character of s1 and s2 is constant.
+
+   a c d
+   d f g 
+   3 3 3 Ascii character diff are same and hece their pair are same.
+
+   a-c = 1-3 =-3  + 26 =  23#--> c-d = 3-4= -1 + 26 = 25 ==> 23#25.
+   d-f = 4-7 = -3  + 26 = 23#--> f-g = 6-7= -1 +26 =25 ==> 23#25.
+
+
+   this way key is getting generated
+   Since there key is same and hence they conatins an arraylist of thses string
+
+   */
+
+ public static String getCode(String str){
+        String code = "";
+        for(int i=1;i<str.length();i++){
+            char prev = str.charAt(i-1);
+            char curr = str.charAt(i);
+            int diff = curr-prev;
+            if(diff<0){
+                diff+=26;
+            }
+            code+=diff+"#";
+        }
+        code+=".";
+        return code;
+    }
+	public static ArrayList<ArrayList<String>> groupShiftedStrings(String[] strs) {
+		HashMap<String, ArrayList<String>> map = new HashMap<>();
+		
+		for(String str: strs){
+		    String key = getCode(str);
+		    if(map.containsKey(key)){
+		        ArrayList<String> oa = map.get(key);
+		        oa.add(str);
+		    }else{
+		        ArrayList<String> a = new ArrayList<String>();
+		        a.add(str);
+		        map.put(key, a);
+		    }
+		}
+        ArrayList<ArrayList<String>> ans = new ArrayList<ArrayList<String>>();
+        for(ArrayList<String> a : map.values()){
+            ans.add(a);
+        }
+		return ans;
+    }
+    
+
+
+//26  ====================================================================================================================
+Isomorphic Strings
+
+
+/*
+
+pepcoding
+sosherlok
+p->s    s->true {p:s}
+e->o    o->true
+p->s    s->true map1.get(p)==s //agar s ni hota p->s  to {unkown}->s yaha 2 log 1 hi k pint ni kar akte hai
+c->h    h->true
+o->e    e->true
+d->r
+i->l
+n->o
+g->k
 
 
 
 
+b->y     {y-true} //b pahle se use ni hai to {b:y} and y ko true karenge
+c->y     //c pahle se use ni hai {c:y} but y== true hai is matlab c se pahle ko uska parnet hai is liye usko invalidate kar dange
+*/
 
+	public static boolean isIsomorphic(String s, String t) {
+		HashMap<Character, Character> map1 = new HashMap<>();
+		HashMap<Character, Boolean> map2 = new HashMap<>();
+		
+		for(int i =0;i<s.length();i++){
+		    char ch1 = s.charAt(i);
+		    char ch2 = t.charAt(i);
+		    if(map1.containsKey(ch1)){
+		        if(map1.get(ch1)!=ch2){
+		            return false;
+		        }
+		    }else{
+		        
+		        if(map2.containsKey(ch2)==true){
+		            return false;
+		        }else{
+		            map1.put(ch1,ch2);
+		            map2.put(ch2,true);
+		        }
+		    }
+		}
 
-
-
+		return true;
+	}
 
 
 
