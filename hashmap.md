@@ -1878,6 +1878,76 @@ c->y     //c pahle se use ni hai {c:y} but y== true hai is matlab c se pahle ko 
 		return true;
 	}
 
+//27  ====================================================================================================================
+
+//Word Pattern
+//Same like previous question
+
+//isme ch: word[i] ka map bange and word[i]:Boolean ka map banega
+
+/*
+1 pareent 2 diff child
+ p      p
+ abc    bcd
+
+p:abc
+p:bcd false
+
+
+ p      q
+ abc    abc
+
+
+ 2 parents same chile
+p:abc
+q:abc false
+*/
+
+	public static boolean wordPattern(String pattern, String str) {
+	    //System.out.println(str);
+		String[] words = str.split(" "); //str.split(" ");
+		
+		HashMap<Character, String> map  =new HashMap<>();
+		HashMap<String, Boolean> used  =new HashMap<>();
+		
+		for(int i=0;i<pattern.length();i++){
+		    char ch = pattern.charAt(i);
+		    
+		    if(map.containsKey(ch)==false){
+		        if(used.containsKey(words[i])==true){
+		            return false;
+		        }else{
+		           map.put(ch, words[i]);
+		           used.put(words[i], true);
+		        }
+		         
+		        
+		    }
+		    else
+		    {
+		        String mapWith = map.get(ch);
+		        
+		        if(mapWith.equals(words[i])==false){
+		            return false;
+		        }
+		    }
+		}
+		
+		
+		return true;
+	}
+
+
+
+//28  ====================================================================================================================
+
+Longest Subarray With Sum Divisible By K
+
+
+
+
+
+
 
 
 
